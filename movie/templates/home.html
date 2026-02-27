@@ -1,24 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Welcome to the Movie Reviews Home Page, {{ name }}</h1>
 <h2>This is the full home page content.</h2>
 
-<div class="container">
-    <form action="">
-        <div class="mb-3">
-            <label for="searchMovie" class="form-label">
-                Search Movie
-            </label>
-            <input type="text" class="form-control" name="searchMovie"/>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-    <p>Searching for {{ searchterm }}</p>
-        {% for movie in movies %}
-            <h2>{{ movie.title }}</h2>
-            <h3>{{ movie.description }}</h3>
-            <img src="{{ movie.image.url }}">
-            {% if movie.url %}
-                <a href="{{ movie.url }}">Movie Link</a>
+<form method="GET">
+    <div class="mb-3">
+        <label for="searchMovie" class="form-label">
+            Search Movie
+        </label>
+        <input type="text" class="form-control" name="searchMovie"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<p>Searching for {{ searchterm }}</p>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+    {% for movie in movies %}
+    <div class="col">
+        <div class="card h-100">
+
+            {% if movie.image %}
+            <img src="{{ movie.image.url }}" class="card-img-top" alt="{{ movie.title }}">
             {% endif %}
-        {% endfor %}
-    <br/>
+
+            <div class="card-body">
+                <h5 class="card-title">{{ movie.title }}</h5>
+
+                <p class="card-text">
+                    <strong>Description:</strong> {{ movie.description }}
+                </p>
+
+                <p class="card-text">
+                    <strong>Genre:</strong> {{ movie.genre }}
+                </p>
+
+                <p class="card-text">
+                    <strong>Year:</strong> {{ movie.year }}
+                </p>
+
+                {% if movie.url %}
+                    <a href="{{ movie.url }}" class="btn btn-secondary">
+                        Movie Link
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+    {% empty %}
+        <p>No movies found.</p>
+    {% endfor %}
+
 </div>
+
+{% endblock %}
